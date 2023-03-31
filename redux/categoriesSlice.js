@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable quotes */
 // import {createSlice} from '@reduxjs/toolkit';
 // import axios from 'axios';
 
@@ -50,172 +48,192 @@
 // export default InitialSlice.reducer;
 
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import en from '../android/app/src/main/assests/data/en.json';
-import {AsyncStorage} from 'react-native';
+import en from '../android/app/src/main/assests/data/en/en.json';
+import fr from '../android/app/src/main/assests/data/fr/fr.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // Define an asynchronous action creator that fetches data from the API
 
 // Define a slice to manage the state of the API data
 
-export const getTodos = createAsyncThunk('todoList/getTodos', async () => {
-  let response = [
-    {
-      name: 'Lab Laboratory Research',
+export const getTodos = createAsyncThunk('todoList/getTodos', async key => {
+  console.log('key', key);
+  // let response = [
+  //   {
+  //     name: 'Lab Laboratory Research',
 
-      time: '07.43pm',
+  //     time: '07.43pm',
 
-      date: '2023-3-27',
+  //     date: '2023-3-27',
 
-      tool: 'Laboratory',
+  //     tool: 'Laboratory',
 
-      image: require('../images/lab.png'),
-    },
+  //     image: require('../images/lab.png'),
+  //   },
 
-    {
-      name: 'D High Risk Result',
+  //   {
+  //     name: 'D High Risk Result',
 
-      time: '05.33pm',
+  //     time: '05.33pm',
 
-      date: '2023-3-27',
+  //     date: '2023-3-27',
 
-      tool: 'Diagnostics',
+  //     tool: 'Diagnostics',
 
-      image: require('../images/diagnosis.png'),
-    },
+  //     image: require('../images/diagnosis.png'),
+  //   },
 
-    {
-      name: 'Field name 1',
+  //   {
+  //     name: 'Field name 1',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-27',
+  //     date: '2023-3-27',
 
-      tool: 'Field Works',
+  //     tool: 'Field Works',
 
-      image: require('../images/field.png'),
-    },
+  //     image: require('../images/field.png'),
+  //   },
 
-    {
-      name: 'Lab Very High Risk Result',
+  //   {
+  //     name: 'Lab Very High Risk Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-26',
+  //     date: '2023-3-26',
 
-      tool: 'Laboratory',
+  //     tool: 'Laboratory',
 
-      image: require('../images/lab.png'),
-    },
+  //     image: require('../images/lab.png'),
+  //   },
 
-    {
-      name: 'D Low Risk Result',
+  //   {
+  //     name: 'D Low Risk Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-26',
+  //     date: '2023-3-26',
 
-      tool: 'Diagnostics',
+  //     tool: 'Diagnostics',
 
-      image: require('../images/diagnosis.png'),
-    },
+  //     image: require('../images/diagnosis.png'),
+  //   },
 
-    {
-      name: 'Field Very High Risk Result',
+  //   {
+  //     name: 'Field Very High Risk Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-28',
+  //     date: '2023-3-28',
 
-      tool: 'Field Works',
+  //     tool: 'Field Works',
 
-      image: require('../images/field.png'),
-    },
+  //     image: require('../images/field.png'),
+  //   },
 
-    {
-      name: 'D Human Researach',
+  //   {
+  //     name: 'D Human Researach',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-12',
+  //     date: '2023-3-12',
 
-      tool: 'Diagnostics',
+  //     tool: 'Diagnostics',
 
-      image: require('../images/diagnosis.png'),
-    },
+  //     image: require('../images/diagnosis.png'),
+  //   },
 
-    {
-      name: 'Lab Medium Risk Result',
+  //   {
+  //     name: 'Lab Medium Risk Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-12',
+  //     date: '2023-3-12',
 
-      tool: 'Laboratory',
+  //     tool: 'Laboratory',
 
-      image: require('../images/lab.png'),
-    },
+  //     image: require('../images/lab.png'),
+  //   },
 
-    {
-      name: 'Field High Risk Result',
+  //   {
+  //     name: 'Field High Risk Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-29',
+  //     date: '2023-3-29',
 
-      tool: 'Field Works',
+  //     tool: 'Field Works',
 
-      image: require('../images/field.png'),
-    },
+  //     image: require('../images/field.png'),
+  //   },
 
-    {
-      name: 'D Poor Result',
+  //   {
+  //     name: 'D Poor Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-29',
+  //     date: '2023-3-29',
 
-      tool: 'Diagnostics',
+  //     tool: 'Diagnostics',
 
-      image: require('../images/diagnosis.png'),
-    },
+  //     image: require('../images/diagnosis.png'),
+  //   },
 
-    {
-      name: 'Lab Good Result',
+  //   {
+  //     name: 'Lab Good Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-15',
+  //     date: '2023-3-15',
 
-      tool: 'Laboratory',
+  //     tool: 'Laboratory',
 
-      image: require('../images/lab.png'),
-    },
+  //     image: require('../images/lab.png'),
+  //   },
 
-    {
-      name: 'Lab Field Best Result',
+  //   {
+  //     name: 'Lab Field Best Result',
 
-      time: '06.43pm',
+  //     time: '06.43pm',
 
-      date: '2023-3-12',
+  //     date: '2023-3-12',
 
-      tool: 'Laboratory',
+  //     tool: 'Laboratory',
 
-      image: require('../images/lab.png'),
-    },
-  ];
-  console.log('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
+  //     image: require('../images/lab.png'),
+  //   },
+  // ];
+  // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
+  let json = '';
+  switch (key) {
+    case 'en':
+      const value = await AsyncStorage.getItem('en');
+      if (value !== null) {
+        await AsyncStorage.setItem('en', json);
+        json = value;
+        // console.log('lanfuage', value);
+      } else {
+        json = en;
+        // console.log('yyyyyyyyyyyyyyyyyyy', value);
+      }
+      break;
 
-  let json = en;
+    case 'fr':
+      const value1 = await AsyncStorage.getItem('fr');
+      if (value1 !== null) {
+        await AsyncStorage.setItem('fr', json);
+        json = value1;
+      } else {
+        json = fr;
+        console.log('qqqqqqqqqqqqqqqqq', json);
+      }
+      break;
+    default:
+      json = en;
+      break;
+  }
 
-  console.log(json, 'gfghfhfhgf');
   return json;
-
-  // const value = await AsyncStorage.getItem('en');
-  // if (value !== null) {
-  //   await AsyncStorage.setItem('en', en);
-  //   return en;
-  // } else {
-  //   return value;
-  // }
 });
 
 const categoriesSlice = createSlice({
@@ -226,7 +244,7 @@ const categoriesSlice = createSlice({
   },
   extraReducers: {
     [getTodos.fulfilled]: (state, action) => {
-      console.log('PPOPOPOPO', state);
+      console.log('PPOPOPOPO', state, action);
       //If we have to totally replace the existing array:
       state.todos = action.payload;
 

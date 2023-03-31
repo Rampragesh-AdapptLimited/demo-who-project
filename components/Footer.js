@@ -13,7 +13,6 @@ const Footer = () => {
   const navigation = useNavigation();
   return (
     <View
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         marginTop: 15,
         flexDirection: 'row',

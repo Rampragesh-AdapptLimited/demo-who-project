@@ -1,25 +1,21 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useState, useEffect} from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-} from 'react-native';
+import {Image, StyleSheet, Text, View, FlatList} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SwitchSelector from 'react-native-switch-selector';
 import Footer from './Footer';
 import {useSelector, useDispatch} from 'react-redux';
 import {getTodos} from '../redux/categoriesSlice';
+import {useTranslation} from 'react-i18next';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const {t} = useTranslation();
 
   const {todos, status} = useSelector(state => state.todoList);
 
@@ -32,7 +28,7 @@ const Home = () => {
           color="#4F8EF7"
           size={30}
         />
-        <Text style={styles.itemStyle}>Bookmark</Text>
+        <Text style={styles.itemStyle}>{t('Bookmark')}</Text>
       </View>
     );
   };
@@ -190,12 +186,12 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    dispatch(getTodos());
+    dispatch(getTodos('fr'));
     // dispatch(getDataAsync());
-    datasorting(todos);
     // setlist(data);
-  }, []);
-  console.log('jldnhljsdh', todos);
+    datasorting(todos);
+  }, [todos]);
+  console.log('todos', todos);
 
   const datasorting = todos => {
     const todaydate = new Date();
@@ -209,15 +205,18 @@ const Home = () => {
     const value = [
       {
         day: 'today',
-        data: todos.filter(x => x.date == todaydate),
+        data: todos !== null ? todos.filter(x => x.date == todaydate) : [],
       },
       {
         day: 'yesterday',
-        data: todos.filter(x => x.date == yesterday),
+        data: todos !== null ? todos.filter(x => x.date == yesterday) : [],
       },
       {
         day: 'Previous',
-        data: todos.filter(x => x.date !== todayformat && x.date !== yesterday),
+        data:
+          todos !== null
+            ? todos.filter(x => x.date !== todayformat && x.date !== yesterday)
+            : [],
       },
     ];
     setData(value);
@@ -241,9 +240,9 @@ const Home = () => {
         }
       });
       datasorting(filter);
-      const images = filter.find(item => item.tool == value);
-      console.log(images, 'images');
-      setimage(images.image);
+      // const images = filter.find(item => item.tool == value);
+      // console.log(images, 'images');
+      // setimage(images.image);
     }
   };
 
@@ -304,7 +303,7 @@ const Home = () => {
       </View>
     );
   };
-  console.log('ghjjhfff', data);
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -325,6 +324,7 @@ const Home = () => {
             onPress={value => selector(value)}
           />
         </View>
+        {/* <Language /> */}
         <View
           style={{
             marginTop: 30,
@@ -337,19 +337,18 @@ const Home = () => {
           <Image style={styles.tinyLogo} source={image} />
           <Text style={styles.labtext}>{list}</Text>
         </View>
-        <ScrollView>
-          {data &&
-            data.map((content, index) => {
-              return (
-                <FlatList
-                  data={content.data}
-                  renderItem={({item}) => getrender(item)}
-                  keyExtractor={content => content.id}
-                  ListHeaderComponent={({}) => getsectionheader(content)}
-                />
-              );
-            })}
-        </ScrollView>
+        {data &&
+          data.map((content, index) => {
+            return (
+              <FlatList
+                key={index}
+                data={content.data}
+                renderItem={({item}) => getrender(item)}
+                keyExtractor={(content, i) => i}
+                ListHeaderComponent={({}) => getsectionheader(content)}
+              />
+            );
+          })}
       </LinearGradient>
       <Footer />
     </View>
