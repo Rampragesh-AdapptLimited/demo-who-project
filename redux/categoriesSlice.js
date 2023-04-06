@@ -1,63 +1,11 @@
-// import {createSlice} from '@reduxjs/toolkit';
-// import axios from 'axios';
-
-// export const InitialSlice = createSlice({
-//   name: 'addredux',
-//   initialState: {
-//     data: employee,
-//   },
-//   reducers: {
-//     adddata: (state, action) => {
-//       state.data.push(action.payload);
-//     },
-//     getdata: (state, action) => {
-//       state.data = action.payload;
-//     },
-//   },
-// });
-
-// export const getDataAsync = data => async dispatch => {
-//   try {
-//     // const response = await axios.get(`${employee}/${data}`);
-//     // console.log(data);
-//     // const response = employee;
-//     console.log('dataaaaaaaaaaaaaaaaaaa', data);
-
-//     dispatch(getdata(data));
-//   } catch (err) {
-//     console.log('err');
-//     throw new Error(err);
-//   }
-// };
-
-// // export const addDatasync = data => async dispatch => {
-// //   try {
-// //     console.log('true');
-// //     const response = await axios.post(employee, data);
-// //     console.log('responseaaas', response);
-// //     dispatch(adddata(response.data));
-// //   } catch (error) {
-// //     console.log('err');
-// //     throw new Error(err);
-// //   }
-// // };
-
-// export const {adddata, getdata} = InitialSlice.actions;
-// export const showData = state => state.addredux.data;
-
-// export default InitialSlice.reducer;
-
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import en from '../android/app/src/main/assests/data/en/en.json';
-import fr from '../android/app/src/main/assests/data/fr/fr.json';
+import en from '../android/app/src/main/assets/data/en/en.json';
+import fr from '../android/app/src/main/assets/data/fr/fr.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Define an asynchronous action creator that fetches data from the API
-
-// Define a slice to manage the state of the API data
+let RNFS = require('react-native-fs');
 
 export const getTodos = createAsyncThunk('todoList/getTodos', async key => {
-  console.log('key', key);
   // let response = [
   //   {
   //     name: 'Lab Laboratory Research',
@@ -205,34 +153,47 @@ export const getTodos = createAsyncThunk('todoList/getTodos', async key => {
   // ];
   // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
   let json = '';
+  // // await AsyncStorage.clear();
   switch (key) {
     case 'en':
       const value = await AsyncStorage.getItem('en');
+      // console.log('valueeee', value);
+
       if (value !== null) {
-        await AsyncStorage.setItem('en', json);
-        json = value;
-        // console.log('lanfuage', value);
+        json = JSON.parse(value);
+        // console.log('ddddddddddddddddddddddd', json);
       } else {
-        json = en;
-        // console.log('yyyyyyyyyyyyyyyyyyy', value);
+        await RNFS.readFileAssets('data/en/en.json', 'utf8') // 'base64' for binary
+          .then(async res => {
+            await AsyncStorage.setItem('en', res);
+            json = JSON.parse(res);
+            // console.log('rrrrrrrrrrrrr', json);
+          })
+          .catch(err => {
+            console.log('ssssssssssss', err.message, err.code);
+          });
       }
       break;
 
     case 'fr':
       const value1 = await AsyncStorage.getItem('fr');
       if (value1 !== null) {
-        await AsyncStorage.setItem('fr', json);
-        json = value1;
+        json = JSON.parse(value1);
       } else {
-        json = fr;
-        console.log('qqqqqqqqqqqqqqqqq', json);
+        await RNFS.readFileAssets('data/fr/fr.json', 'utf8') // 'base64' for binary
+          .then(async res => {
+            await AsyncStorage.setItem('fr', res);
+            json = JSON.parse(res);
+          })
+          .catch(err => {
+            console.log('sssssssssssss', err.message, err.code);
+          });
       }
       break;
     default:
       json = en;
       break;
   }
-
   return json;
 });
 
@@ -244,8 +205,8 @@ const categoriesSlice = createSlice({
   },
   extraReducers: {
     [getTodos.fulfilled]: (state, action) => {
-      console.log('PPOPOPOPO', state, action);
       //If we have to totally replace the existing array:
+      // console.log('action', action.payload);
       state.todos = action.payload;
 
       //if we want to add the json to an existing array
