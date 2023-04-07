@@ -1,6 +1,4 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import en from '../android/app/src/main/assets/data/en/en.json';
-import fr from '../android/app/src/main/assets/data/fr/fr.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let RNFS = require('react-native-fs');
@@ -157,17 +155,14 @@ export const getTodos = createAsyncThunk('todoList/getTodos', async key => {
   switch (key) {
     case 'en':
       const value = await AsyncStorage.getItem('en');
-      // console.log('valueeee', value);
 
       if (value !== null) {
         json = JSON.parse(value);
-        // console.log('ddddddddddddddddddddddd', json);
       } else {
         await RNFS.readFileAssets('data/en/en.json', 'utf8') // 'base64' for binary
           .then(async res => {
             await AsyncStorage.setItem('en', res);
             json = JSON.parse(res);
-            // console.log('rrrrrrrrrrrrr', json);
           })
           .catch(err => {
             console.log('ssssssssssss', err.message, err.code);
@@ -191,7 +186,15 @@ export const getTodos = createAsyncThunk('todoList/getTodos', async key => {
       }
       break;
     default:
-      json = en;
+      await RNFS.readFileAssets('data/en/en.json', 'utf8') // 'base64' for binary
+        .then(async res => {
+          await AsyncStorage.setItem('fr', res);
+          json = JSON.parse(res);
+        })
+        .catch(err => {
+          console.log('sssssssssssss', err.message, err.code);
+        });
+      // json = en;
       break;
   }
   return json;
@@ -205,13 +208,7 @@ const categoriesSlice = createSlice({
   },
   extraReducers: {
     [getTodos.fulfilled]: (state, action) => {
-      //If we have to totally replace the existing array:
-      // console.log('action', action.payload);
       state.todos = action.payload;
-
-      //if we want to add the json to an existing array
-      // let updatedTodos = state.todos.concat(action.payload);
-      // state.todos = updatedTodos;
       state.status = null;
     },
     [getTodos.pending]: state => {

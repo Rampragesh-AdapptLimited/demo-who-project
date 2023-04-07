@@ -11,21 +11,18 @@ import SwitchSelector from 'react-native-switch-selector';
 import Footer from './Footer';
 import {useSelector, useDispatch} from 'react-redux';
 import {getTodos} from '../redux/categoriesSlice';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const Home = ({route, navigation}) => {
   let name = route?.params?.name;
   const value = route?.params?.value;
   name = name != undefined ? name : 'en';
-  // console.log(name, 'ghhhh');
   const dispatch = useDispatch();
 
   const {todos, status} = useSelector(state => state.todoList);
-  // const [list, setlist] = useState({en: 'All', fr: 'Alle'});
   const [list, setlist] = useState('All');
-  const [image, setimage] = useState(require('../images/lab.png'));
+  const [image, setimage] = useState(0);
   const [dispatchData, setDispatchData] = useState([]);
-  // console.log('sssssssfff', dispatchData);
   const [data, setData] = useState([]);
-  // const [lang, setlang] = useState('All');
 
   const ListHeader = () => {
     return (
@@ -43,197 +40,45 @@ const Home = ({route, navigation}) => {
     );
   };
   const options = [
-    {label: 'All', value: 'All', tab: 1},
-    {label: 'Laboratory', value: 'Laboratory'},
-    {label: 'Diagnostics', value: 'Diagnostics'},
-    {label: 'Field Works', value: 'Field Works'},
+    {label: 'All', value: 'All', image: require('../images/lab.png')},
+    {
+      label: 'Laboratory',
+      value: 'Laboratory',
+      image: require('../images/lab.png'),
+    },
+    {
+      label: 'Diagnostics',
+      value: 'Diagnostics',
+      image: require('../images/diagnosis.png'),
+    },
+    {
+      label: 'Field Works',
+      value: 'Field Works',
+      image: require('../images/field.png'),
+    },
   ];
   const options1 = [
-    {label: 'Alle', value: 'Alle'},
-    {label: 'Laboratoire', value: 'Laboratoire'},
-    {label: 'Diagnostique', value: 'Diagnostique'},
-    {label: 'Travaux de terrain', value: 'Travaux de terrain'},
-  ];
-
-  const headerData = [
+    {label: 'Alle', value: 'Alle', image: require('../images/lab.png')},
     {
-      en: 'All',
-      fr: 'Alle',
+      label: 'Laboratoire',
+      value: 'Laboratoire',
+      image: require('../images/lab.png'),
     },
     {
-      en: 'Laboratory',
-      fr: 'Laboratoire',
+      label: 'Diagnostique',
+      value: 'Diagnostique',
+      image: require('../images/diagnosis.png'),
     },
     {
-      en: 'Diagnostics',
-      fr: 'Diagnostique',
-    },
-    {
-      en: 'Field Works',
-      fr: 'Travaux de terrain',
+      label: 'Travaux de terrain',
+      value: 'Travaux de terrain',
+      image: require('../images/field.png'),
     },
   ];
-
-  // const employee = [
-  //   {
-  //     name: 'Lab Laboratory Research',
-
-  //     time: '07.43pm',
-
-  //     date: '2023-3-27',
-
-  //     tool: 'Laboratory',
-
-  //     image: require('../images/lab.png'),
-  //   },
-
-  //   {
-  //     name: 'D High Risk Result',
-
-  //     time: '05.33pm',
-
-  //     date: '2023-3-27',
-
-  //     tool: 'Diagnostics',
-
-  //     image: require('../images/diagnosis.png'),
-  //   },
-
-  //   {
-  //     name: 'Field name 1',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-27',
-
-  //     tool: 'Field Works',
-
-  //     image: require('../images/field.png'),
-  //   },
-
-  //   {
-  //     name: 'Lab Very High Risk Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-26',
-
-  //     tool: 'Laboratory',
-
-  //     image: require('../images/lab.png'),
-  //   },
-
-  //   {
-  //     name: 'D Low Risk Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-26',
-
-  //     tool: 'Diagnostics',
-
-  //     image: require('../images/diagnosis.png'),
-  //   },
-
-  //   {
-  //     name: 'Field Very High Risk Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-28',
-
-  //     tool: 'Field Works',
-
-  //     image: require('../images/field.png'),
-  //   },
-
-  //   {
-  //     name: 'D Human Researach',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-12',
-
-  //     tool: 'Diagnostics',
-
-  //     image: require('../images/diagnosis.png'),
-  //   },
-
-  //   {
-  //     name: 'Lab Medium Risk Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-12',
-
-  //     tool: 'Laboratory',
-
-  //     image: require('../images/lab.png'),
-  //   },
-
-  //   {
-  //     name: 'Field High Risk Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-29',
-
-  //     tool: 'Field Works',
-
-  //     image: require('../images/field.png'),
-  //   },
-
-  //   {
-  //     name: 'D Poor Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-29',
-
-  //     tool: 'Diagnostics',
-
-  //     image: require('../images/diagnosis.png'),
-  //   },
-
-  //   {
-  //     name: 'Lab Good Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-15',
-
-  //     tool: 'Laboratory',
-
-  //     image: require('../images/lab.png'),
-  //   },
-
-  //   {
-  //     name: 'Lab Field Best Result',
-
-  //     time: '06.43pm',
-
-  //     date: '2023-3-12',
-
-  //     tool: 'Laboratory',
-
-  //     image: require('../images/lab.png'),
-  //   },
-  // ];
 
   useEffect(() => {
     dispatchDatas();
-    // getlist();
   }, [name]);
-
-  // const getlist = value => {
-  //   if (name == 'fr') {
-  //     // setlist(value);
-  //     setoption1(options1);
-  //   } else {
-  //     // setlist(value);
-  //     setoption(options);
-  //   }
-  // };
 
   const dispatchDatas = async () => {
     switchRef.current.toggleItem(0);
@@ -259,19 +104,6 @@ const Home = ({route, navigation}) => {
     const yesterday = `${todaydate.getFullYear()}-${todaydate.getMonth() + 1}-${
       todaydate.getDate() - 1
     }`;
-    // console.log('ss', todaydate, yesterday, 'dddd', todayformat);
-    // if (list != {en: 'All', fr: 'Alle'}) {
-    //   todos.filter(item => {
-    //     if (item.tool === list) {
-    //       return item;
-    //     }
-    //   });
-    // }
-    // if (name == 'fr') {
-    //   setlist({fr: 'Alle'});
-    // } else {
-    //   setlist({en: 'All'});
-    // }
     const value = [
       {
         day: name == 'fr' ? "'aujourd'hui'" : 'today',
@@ -295,31 +127,14 @@ const Home = ({route, navigation}) => {
             : [],
       },
     ];
-    // console.log('value', value);
     setData(value);
-    // console.log('data', value);
   };
   const switchRef = useRef(null);
 
   const selector = value => {
-    // getlist(value);
-    // const ss = options.map(item => item.value);
-    // if (ss == 'All') {
-    //   return ss;
-    // }
-    // console.log('sss', ss);
-    // const dd = options.map(item => item.value);
-    // console.log('sss', dd);
-    const ss = options.map(item => {
-      if (item.value == 'All') {
-        return item.value;
-      }
-    });
-    console.log('ssss', ss);
-
     setlist(value);
     if (value == 'All' || value == 'Alle') {
-      setimage(require('../images/lab.png'));
+      setimage(image);
       datasorting(dispatchData);
     } else {
       const filter = dispatchData.filter(item => {
@@ -329,9 +144,13 @@ const Home = ({route, navigation}) => {
       });
       datasorting(filter);
       console.log('filter', filter);
-      // const images = filter.find(item => item.tool == value);
-      // console.log(images, 'images');
-      // setimage(images.image);
+      if (name == 'fr') {
+        const images = options1.findIndex(item => item.value == value);
+        setimage(images);
+      } else {
+        const images = options.findIndex(item => item.value == value);
+        setimage(images);
+      }
     }
   };
 
@@ -414,7 +233,6 @@ const Home = ({route, navigation}) => {
             onPress={value => selector(value)}
           />
         </View>
-        {/* <Language /> */}
         <View
           style={{
             marginTop: 30,
@@ -424,8 +242,7 @@ const Home = ({route, navigation}) => {
           }}
         />
         <View style={styles.laboratory}>
-          <Image style={styles.tinyLogo} source={image} />
-          {/* <Text style={styles.labtext}>{name == 'fr' ? list.fr : list.en}</Text> */}
+          <Image style={styles.tinyLogo} source={options[image].image} />
           <Text style={styles.labtext}>{list}</Text>
         </View>
 
